@@ -1,20 +1,23 @@
 const recieverbox = document.getElementById("person");
 const msgbox = document.getElementById("msg");
 
-//for chat thingy
-// const el = document.createElement('li');
-// el.innerHTML = text;
-// document.querySelector('ul').appendChild(el)
+
 
 var client;
 var loggedIn;
-// const apiURL = "https://springbootapi-1.onrender.com/api";
 const apiURL = "https://springbootapi-1.onrender.com" + "/api"
+
+window.onload = getMessages;
+
+setInterval(getMessages, 5000);
+
+
 // while(true){
 //     while(loggedIn){
 //         console.log("logged in")
 //     }
 // }
+
 
 function Client(username, password){
     this.username = username
@@ -25,7 +28,7 @@ function createAccount(){
     const username = document.getElementById("username")
     const password = document.getElementById("password")
 
-    const apiCall = apiURL + "/login/register";
+    const apiCall = apiURL + "/login/register"
 
     fetch(apiCall, {
         method: "post",
@@ -56,9 +59,9 @@ function createAccount(){
 
 function login(){
     const username = document.getElementById("login")
-    const password = document.getElementById("pass")
-    
-    const apiCall = apiURL + "/login/signin";
+    const password = document.getElementById("pass") 
+
+    const apiCall = apiURL + "/login/signin"
 
     fetch(apiCall,{
         method: "post",
@@ -106,7 +109,6 @@ function sendMessage(){
         alert("Please fill out both boxes before sending a message.")
         return
     }
-
     const apiCall = apiURL + "/msg/send"
 
     fetch(apiCall, {
@@ -126,6 +128,41 @@ function sendMessage(){
         }
     })
     .catch((error) =>{
-        alert(error)
+        alert(error) 
     })
+}
+
+function getMessages(){
+
+    if(client == null){
+        return
+    }
+    const apiCall = apiURL + "/msg/get/"
+    fetch(apiCall + client.username , {
+        method: "GET"
+    })
+    .then(async response => {
+        if(!response.ok){
+            throw new Error("Server is down.")
+        }
+        try{
+            return response.json()
+        }
+        catch(error){
+            return
+        }
+    })
+    .then(json => {
+        for(let i = 0; i < Object.keys(json).length; i++){
+            const username = json[i].username
+            console.log(username)
+        }
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+
+    // const el = document.createElement('li');
+    // el.innerHTML = text;
+    // document.querySelector('ul').appendChild(el)
 }
