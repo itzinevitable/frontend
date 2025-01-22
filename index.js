@@ -9,7 +9,7 @@ const msgbox = document.getElementById("msg");
 var client;
 var loggedIn;
 // const apiURL = "https://springbootapi-1.onrender.com/api";
-const apiURL = "http://localhost:8080"
+const apiURL = "https://springbootapi-1.onrender.com" + "/api"
 // while(true){
 //     while(loggedIn){
 //         console.log("logged in")
